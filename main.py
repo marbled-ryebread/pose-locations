@@ -1,4 +1,4 @@
-from math import atan, cos, radians, sin, sqrt
+from math import cos, radians, sin, sqrt, tan
 
 
 ROBOT_CENTRE_TO_APRILTAG = 17.125
@@ -22,23 +22,23 @@ APRIL_TAG_INFO = [
 def get_left_pair(a, b, x, y, rotation):
     length = get_left_right_length(a, b)
     return (
-        x + length * get_x_portion_left(a, b, rotation) / 12,
-        y + length * get_y_portion_left(a, b, rotation) / 12,
+        x + length * get_x_portion_left(a, b, rotation) / 39.37,
+        y + length * get_y_portion_left(a, b, rotation) / 39.37,
     )
 
 
 def get_right_pair(a, b, x, y, rotation):
     length = get_left_right_length(a, b)
     return (
-        x + length * get_x_portion_right(a, b, rotation) / 12,
-        y + length * get_y_portion_right(a, b, rotation) / 12,
+        x + length * get_x_portion_right(a, b, rotation) / 39.37,
+        y + length * get_y_portion_right(a, b, rotation) / 39.37,
     )
 
 
 def get_middle_pair(a, x, y, rotation):
     return (
-        x + a * get_x_portion(rotation) / 12,
-        y + a * get_y_portion(rotation) / 12,
+        x + a * get_x_portion(rotation) / 39.37,
+        y + a * get_y_portion(rotation) / 39.37,
     )
 
 
@@ -55,58 +55,56 @@ def get_y_portion(angle, adjust=0):
 
 
 def get_x_portion_left(a, b, angle):
-    return get_x_portion(angle, atan(b / a) * -1)
+    return get_x_portion(angle, tan(b / a) * -1)
 
 
 def get_y_portion_left(a, b, angle):
-    return get_y_portion(angle, atan(b / a) * -1)
+    return get_y_portion(angle, tan(b / a) * -1)
 
 
 def get_x_portion_right(a, b, angle):
-    return get_x_portion(angle, atan(b / a))
+    return get_x_portion(angle, tan(b / a))
 
 
 def get_y_portion_right(a, b, angle):
-    return get_y_portion(angle, atan(b / a))
+    return get_y_portion(angle, tan(b / a))
+
+
+def print_map_line(id, x, y, rotation):
+    print(f"map.put( {id}, new Pose2d({x}, {y}, Rotation2d.fromDegrees({rotation})) );")
 
 
 print("Left:")
 for info in APRIL_TAG_INFO:
 
-    (centre_x, centre_y) = get_left_pair(
+    (x, y) = get_left_pair(
         ROBOT_CENTRE_TO_APRILTAG,
         APRILTAG_CENTRE_TO_POLE,
         info["x"],
         info["y"],
         info["rotation"],
     )
-    print(
-        f"map.put( new Pose2d({info['id']}, {centre_x}, {centre_y}, Rotation2d.fromDegrees({info['rotation']})) );"
-    )
+    print_map_line(info["id"], x, y, info["rotation"])
 
 print("Right:")
 for info in APRIL_TAG_INFO:
 
-    (centre_x, centre_y) = get_right_pair(
+    (x, y) = get_right_pair(
         ROBOT_CENTRE_TO_APRILTAG,
         APRILTAG_CENTRE_TO_POLE,
         info["x"],
         info["y"],
         info["rotation"],
     )
-    print(
-        f"map.put( new Pose2d({info['id']}, {centre_x}, {centre_y}, Rotation2d.fromDegrees({info['rotation']})) );"
-    )
+    print_map_line(info["id"], x, y, info["rotation"])
 
 print("Centre:")
 for info in APRIL_TAG_INFO:
 
-    (centre_x, centre_y) = get_middle_pair(
+    (x, y) = get_middle_pair(
         ROBOT_CENTRE_TO_APRILTAG,
         info["x"],
         info["y"],
         info["rotation"],
     )
-    print(
-        f"map.put( new Pose2d({info['id']}, {centre_x}, {centre_y}, Rotation2d.fromDegrees({info['rotation']})) );"
-    )
+    print_map_line(info["id"], x, y, info["rotation"])
