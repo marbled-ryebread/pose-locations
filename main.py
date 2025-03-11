@@ -1,4 +1,4 @@
-from math import atan, cos, sin, sqrt
+from math import atan, cos, radians, sin, sqrt
 
 
 ROBOT_CENTRE_TO_APRILTAG = 17.125
@@ -47,11 +47,11 @@ def get_left_right_length(a, b):
 
 
 def get_x_portion(angle, adjust=0):
-    return cos(angle + adjust)
+    return cos(radians(angle) + adjust)
 
 
 def get_y_portion(angle, adjust=0):
-    return sin(angle + adjust)
+    return sin(radians(angle) + adjust)
 
 
 def get_x_portion_left(a, b, angle):
@@ -70,14 +70,43 @@ def get_y_portion_right(a, b, angle):
     return get_y_portion(angle, atan(b / a))
 
 
+print("Left:")
 for info in APRIL_TAG_INFO:
-    print(f"ID: {info['id']}")
-    print(
-        f"Left: {get_left_pair(ROBOT_CENTRE_TO_APRILTAG, APRILTAG_CENTRE_TO_POLE, info['x'], info['y'], info['rotation'])}"
+
+    (centre_x, centre_y) = get_left_pair(
+        ROBOT_CENTRE_TO_APRILTAG,
+        APRILTAG_CENTRE_TO_POLE,
+        info["x"],
+        info["y"],
+        info["rotation"],
     )
     print(
-        f"Right: {get_right_pair(ROBOT_CENTRE_TO_APRILTAG, APRILTAG_CENTRE_TO_POLE, info['x'], info['y'], info['rotation'])}"
+        f"map.put( new Pose2d({info['id']}, {centre_x}, {centre_y}, Rotation2d.fromDegrees({info['rotation']})) );"
+    )
+
+print("Right:")
+for info in APRIL_TAG_INFO:
+
+    (centre_x, centre_y) = get_right_pair(
+        ROBOT_CENTRE_TO_APRILTAG,
+        APRILTAG_CENTRE_TO_POLE,
+        info["x"],
+        info["y"],
+        info["rotation"],
     )
     print(
-        f"Middle: {get_middle_pair(ROBOT_CENTRE_TO_APRILTAG, info['x'], info['y'], info['rotation'])}"
+        f"map.put( new Pose2d({info['id']}, {centre_x}, {centre_y}, Rotation2d.fromDegrees({info['rotation']})) );"
+    )
+
+print("Centre:")
+for info in APRIL_TAG_INFO:
+
+    (centre_x, centre_y) = get_middle_pair(
+        ROBOT_CENTRE_TO_APRILTAG,
+        info["x"],
+        info["y"],
+        info["rotation"],
+    )
+    print(
+        f"map.put( new Pose2d({info['id']}, {centre_x}, {centre_y}, Rotation2d.fromDegrees({info['rotation']})) );"
     )
