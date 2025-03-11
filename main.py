@@ -2,7 +2,7 @@ from math import atan, cos, sin, sqrt
 
 
 ROBOT_CENTRE_TO_APRILTAG = 17.125
-APRILTAG_CENTRE_TO_POLE = 6.5
+APRILTAG_CENTRE_TO_POLE = 6.47
 APRIL_TAG_INFO = [
     {"id": 6, "x": 13.474446, "y": 3.3063179999999996, "rotation": 300},
     {"id": 7, "x": 13.890498, "y": 4.0259, "rotation": 0},
