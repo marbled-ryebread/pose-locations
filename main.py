@@ -84,7 +84,7 @@ for info in APRIL_TAG_INFO:
         info["y"],
         info["rotation"],
     )
-    print_map_line(info["id"], x, y, info["rotation"])
+    print_map_line(info["id"], x, y, (info["rotation"] + 180) % 360)
 
 print("Right:")
 for info in APRIL_TAG_INFO:
@@ -96,7 +96,7 @@ for info in APRIL_TAG_INFO:
         info["y"],
         info["rotation"],
     )
-    print_map_line(info["id"], x, y, info["rotation"])
+    print_map_line(info["id"], x, y, (info["rotation"] + 180) % 360)
 
 print("Centre:")
 for info in APRIL_TAG_INFO:
@@ -107,4 +107,4 @@ for info in APRIL_TAG_INFO:
         info["y"],
         info["rotation"],
     )
-    print_map_line(info["id"], x, y, info["rotation"])
+    print_map_line(info["id"], x, y, (info["rotation"] + 180) % 360)
